@@ -1,38 +1,33 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const path = require("path");
+const isAuthenticated = require('./middleware/Auth');
 
-const Comment = require("./controller/CommentController");
+const { 
+  login,
+  registration,
+  getRegisterUserById
+} = require('./controller/AuthController');
 
-router.get("/api/index", async (req, res) => {
-  const comment = await Comment.index();
-  if (comment) {
-    res.status(200).send(comment);
-  } else {
-    res.status(200).send({});
-  }
-});
+router.post('/api/login', login);
+router.post('/api/registration', registration);
+router.get('/api/registration/:id', getRegisterUserById);
 
-router.post("/api/create", async (req, res) => {
-  const comment = await Comment.create(req);
-  if (comment) {
-    res.status(200).send(comment);
-  } else {
-    res.status(200).send({});
-  }
-});
 
-router.get("/api/show/:id", async (req, res) => {
-  const comment = await Comment.show({ _id: req.params.id });
-  if (comment) {
-    res.status(200).send(comment);
-  } else {
-    res.status(200).send({});
-  }
-});
+const {
+  getUser,
+  getUserById,
+  updateUser,
+  deleteUser,
+} = require('./controller/UserController');
+
+router.get("/api/users", isAuthenticated, getUser);
+router.get("/api/users/:id", isAuthenticated, getUserById);
+// router.post("/api/users", isAuthenticated, createUser);
+router.put("/api/users/:id", isAuthenticated, updateUser);
+router.delete("/api/users/:id", isAuthenticated, deleteUser);
 
 router.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.json({ info: 'Node.js, Express, and Postgres API' });
 });
 
 module.exports = router;

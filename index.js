@@ -1,26 +1,12 @@
-const path = require("path");
-const http = require("http");
-const express = require("express");
-const mongoose = require("mongoose");
+const http = require('http');
+const express = require('express');
+const router = require('./router');
+// const simulation = require('./util/simulation');
+// simulation();
+
 const app = express();
 const server = http.createServer(app);
 
-const cors = require("cors");
-app.use(cors());
-
-const db = require("./config/key").mongoURI;
-const router = require("./router");
-
-mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("MongoDB Connected..."))
-  .catch((err) => console.log(err));
-
-app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

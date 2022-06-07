@@ -30,11 +30,11 @@ const login = async (req, res) => {
 };
 
 const registration = (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, gender, date_birth, city } = req.body;
     
   pool.query(
-    'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id',
-    [name, email, password],
+    'INSERT INTO users (name, email, password, gender, date_birth, city) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+    [name, email, password, gender, date_birth, city],
     (err, result) => {
       if (err) {
         throw err;

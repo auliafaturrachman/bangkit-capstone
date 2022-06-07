@@ -20,7 +20,9 @@ const getUserById = (req, res) => {
     if (err) {
       throw err;
     }
-    res.status(200).json({ status: 'success', data: results.rows });
+    res.status(200)
+      .contentType('application/json')
+      .json({ status: 'success', data: results.rows });
   });
 };
 
@@ -73,6 +75,7 @@ const deleteUser = (req, res) => {
       throw error;
     }
     res.status(200)
+      .contentType('application/json')
       .json({
         status: 'success',
         message: `User deleted with ID: ${id}`,
